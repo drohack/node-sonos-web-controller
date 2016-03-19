@@ -60,7 +60,17 @@ document.getElementById('play').addEventListener('click', function () {
 	// 	action = 'play';
 	// }
 
-	Socket.socket.emit('transport-state', { uuid: Sonos.currentState.selectedZone, state: 'play' });
+	document.getElementById('loadingOverlay').style.display = 'block';
+	var el = document.getElementById('loading'),
+	    i = 0,
+	    load = setInterval(function() {
+	      i = ++i % 4;
+	      el.innerHTML = 'Loading' + Array(i + 1).join('.');
+	}, 700);
+	Socket.socket.emit('transport-state', { uuid: Sonos.currentState.selectedZone, state: 'play' }, function() {
+		//After done setting up next favorite, wait 1 more second before removing the loadingOverlay
+		setTimeout(document.getElementById('loadingOverlay').style.display = 'none', 500);
+	});
 });
 
 document.getElementById('pause').addEventListener('click', function () {
@@ -74,18 +84,52 @@ document.getElementById('pause').addEventListener('click', function () {
 	// 	action = 'play';
 	// }
 
-	Socket.socket.emit('transport-state', { uuid: Sonos.currentState.selectedZone, state: 'pause' });
+	//Display loadingOverlay & "Loading..." animation
+	document.getElementById('loadingOverlay').style.display = 'block';
+	var el = document.getElementById('loading'),
+	    i = 0,
+	    load = setInterval(function() {
+	      i = ++i % 4;
+	      el.innerHTML = 'Loading' + Array(i + 1).join('.');
+	}, 700);
+	Socket.socket.emit('transport-state', { uuid: Sonos.currentState.selectedZone, state: 'pause' }, function() {
+		//After done setting up next favorite, wait 1 more second before removing the loadingOverlay
+		setTimeout(document.getElementById('loadingOverlay').style.display = 'none', 500);
+	});
 });
 
 document.getElementById('next').addEventListener('click', function () {
 	var action = "nextTrack";
 	console.log(action, Sonos.currentState)
-	Socket.socket.emit('transport-state', { uuid: Sonos.currentState.selectedZone, state: action });
+	
+	document.getElementById('loadingOverlay').style.display = 'block';
+	var el = document.getElementById('loading'),
+	    i = 0,
+	    load = setInterval(function() {
+	      i = ++i % 4;
+	      el.innerHTML = 'Loading' + Array(i + 1).join('.');
+	}, 700);
+	Socket.socket.emit('transport-state', { uuid: Sonos.currentState.selectedZone, state: action }, function() {
+		//After done setting up next favorite, wait 1 more second before removing the loadingOverlay
+		setTimeout(document.getElementById('loadingOverlay').style.display = 'none', 500);
+	});
 });
 document.getElementById('prev').addEventListener('click', function () {
 	var action = "previousTrack";
 	console.log(action, Sonos.currentState)
-	Socket.socket.emit('transport-state', { uuid: Sonos.currentState.selectedZone, state: action });
+	
+	//Display loadingOverlay & "Loading..." animation
+	document.getElementById('loadingOverlay').style.display = 'block';
+	var el = document.getElementById('loading'),
+	    i = 0,
+	    load = setInterval(function() {
+	      i = ++i % 4;
+	      el.innerHTML = 'Loading' + Array(i + 1).join('.');
+	}, 700);
+	Socket.socket.emit('transport-state', { uuid: Sonos.currentState.selectedZone, state: action }, function() {
+		//After done setting up next favorite, wait 1 more second before removing the loadingOverlay
+		setTimeout(document.getElementById('loadingOverlay').style.display = 'none', 500);
+	});
 });
 
 document.getElementById('music-sources-container').addEventListener('click', function (e) {
