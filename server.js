@@ -121,7 +121,7 @@ socketServer.sockets.on('connection', function (socket) {
     socket.emit('favorites', favorites);
   });
 
-  socket.on('transport-state', function (data) {
+  socket.on('transport-state', function (data, callback) {
     // find player based on uuid
     var player = discovery.getPlayerByUUID(data.uuid);
 
@@ -130,6 +130,11 @@ socketServer.sockets.on('connection', function (socket) {
     // invoke action
     //console.log(data)
     player[data.state]();
+    
+    //run the callback function
+    if(callback != null) {
+    	callback();
+    }
   });
 
   socket.on('group-volume', function (data) {
