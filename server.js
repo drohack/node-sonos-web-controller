@@ -165,9 +165,9 @@ socketServer.sockets.on('connection', function (socket) {
     });
   });
 
-  socket.on('queue', function (data) {
-    loadQueue(data.uuid, socket);
-  });
+//  socket.on('queue', function (data) {
+//    loadQueue(data.uuid, socket);
+//  });
 
   socket.on('seek', function (data) {
     var player = discovery.getPlayerByUUID(data.uuid);
@@ -252,46 +252,46 @@ discovery.on('favorites', function (data) {
   socketServer.sockets.emit('favorites', data);
 });
 
-discovery.on('queue-changed', function (data) {
-  console.log('queue-changed', data);
-  delete queues[data.uuid];
-  loadQueue(data.uuid, socketServer.sockets);
-});
+//discovery.on('queue-changed', function (data) {
+//  console.log('queue-changed', data);
+//  delete queues[data.uuid];
+//  loadQueue(data.uuid, socketServer.sockets);
+//});
 
 function loadQueue(uuid, socket) {
-  console.time('loading-queue');
-  var maxRequestedCount = 600;
-  function getQueue(startIndex, requestedCount) {
-    console.log('getqueue', startIndex, requestedCount)
-    var player = discovery.getPlayerByUUID(uuid);
-    player.getQueue(startIndex, requestedCount, function (success, queue) {
-      if (!success) return;
-      socket.emit('queue', {uuid: uuid, queue: queue});
-
-      if (!queues[uuid] || queue.startIndex == 0) {
-        queues[uuid] = queue;
-      } else {
-        queues[uuid].items = queues[uuid].items.concat(queue.items);
-      }
-
-      if (queue.startIndex + queue.numberReturned < queue.totalMatches) {
-        getQueue(queue.startIndex + queue.numberReturned, maxRequestedCount);
-      } else {
-        console.timeEnd('loading-queue');
-      }
-    });
-  }
-
-  if (!queues[uuid]) {
-    getQueue(0, maxRequestedCount);
-  } else {
-    var queue = queues[uuid];
-    queue.numberReturned = queue.items.length;
-    socket.emit('queue', {uuid: uuid, queue: queue});
-    if (queue.totalMatches > queue.items.length) {
-      getQueue(queue.items.length, maxRequestedCount);
-    }
-  }
+//  console.time('loading-queue');
+//  var maxRequestedCount = 600;
+//  function getQueue(startIndex, requestedCount) {
+//    console.log('getqueue', startIndex, requestedCount)
+//    var player = discovery.getPlayerByUUID(uuid);
+//    player.getQueue(startIndex, requestedCount, function (success, queue) {
+//      if (!success) return;
+//      socket.emit('queue', {uuid: uuid, queue: queue});
+//
+//      if (!queues[uuid] || queue.startIndex == 0) {
+//        queues[uuid] = queue;
+//      } else {
+//        queues[uuid].items = queues[uuid].items.concat(queue.items);
+//      }
+//
+//      if (queue.startIndex + queue.numberReturned < queue.totalMatches) {
+//        getQueue(queue.startIndex + queue.numberReturned, maxRequestedCount);
+//      } else {
+//        console.timeEnd('loading-queue');
+//      }
+//    });
+//  }
+//
+//  if (!queues[uuid]) {
+//    getQueue(0, maxRequestedCount);
+//  } else {
+//    var queue = queues[uuid];
+//    queue.numberReturned = queue.items.length;
+//    socket.emit('queue', {uuid: uuid, queue: queue});
+//    if (queue.totalMatches > queue.items.length) {
+//      getQueue(queue.items.length, maxRequestedCount);
+//    }
+//  }
 }
 
 function search(term, socket) {

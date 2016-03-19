@@ -29,7 +29,7 @@ Socket.socket.on('topology-change', function (data) {
 			break;
 		}
 		// we need queue as well!
-		Socket.socket.emit('queue', {uuid:Sonos.currentState.selectedZone});
+//		Socket.socket.emit('queue', {uuid:Sonos.currentState.selectedZone});
 		shouldRenderVolumes = true;
 	}
 
@@ -66,9 +66,9 @@ Socket.socket.on('favorites', function (data) {
 	if (Socket.favoritesChanged instanceof Function) Socket.favoritesChanged(data);
 });
 
-Socket.socket.on('queue', function (data) {
-	if (Socket.queueChanged instanceof Function) Socket.queueChanged(data);
-});
+//Socket.socket.on('queue', function (data) {
+//	if (Socket.queueChanged instanceof Function) Socket.queueChanged(data);
+//});
 
 
 Socket.socket.on('search-result', function (data) {

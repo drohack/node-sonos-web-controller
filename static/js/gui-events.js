@@ -27,7 +27,7 @@ document.getElementById('zone-container').addEventListener('click', function (e)
 	updateCurrentStatus();
 
 	// fetch queue
-	Socket.socket.emit('queue', {uuid: Sonos.currentState.selectedZone});
+//	Socket.socket.emit('queue', {uuid: Sonos.currentState.selectedZone});
 
 }, true);
 

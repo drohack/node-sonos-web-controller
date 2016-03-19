@@ -37,10 +37,10 @@ Socket.favoritesChanged = function (data) {
 	renderFavorites(data);
 }
 
-Socket.queueChanged = function (data) {
-	if (data.uuid != Sonos.currentState.selectedZone) return;
-	renderQueue(data.queue);
-}
+//Socket.queueChanged = function (data) {
+//	if (data.uuid != Sonos.currentState.selectedZone) return;
+//	renderQueue(data.queue);
+//}
 
 Socket.searchResultReceived = function (data) {
 	renderSearchResult(data);
@@ -58,12 +58,14 @@ function updateCurrentStatus() {
 	var prefix = (window.location.pathname != '/') ? window.location.pathname : ''
 	if (selectedZone.state.currentTrack.type == 'radio') {
 		// update radio
+		document.getElementById("playlistName").textContent = selectedZone.state.playlistName;
 		document.getElementById("current-radio-art").src = prefix + selectedZone.state.currentTrack.albumArtURI;
 		document.getElementById("station").textContent = selectedZone.state.currentTrack.title;
 		document.getElementById("information").textContent = selectedZone.state.currentTrack.streamInfo;
 		document.getElementById("status-container").className = "radio";
 
 	} else {
+		document.getElementById("playlistName").textContent = selectedZone.state.playlistName;
 		document.getElementById("current-track-art").src = prefix + selectedZone.state.currentTrack.albumArtURI;
 		document.getElementById("track").textContent = selectedZone.state.currentTrack.title;
 		document.getElementById("artist").textContent = selectedZone.state.currentTrack.artist;
@@ -75,7 +77,7 @@ function updateCurrentStatus() {
 		}
 		document.getElementById("status-container").className = "track";
 	}
-
+	
 	console.log(selectedZone)
 
 	var repeat = document.getElementById("repeat");
@@ -337,59 +339,59 @@ function imageErrorHandler() {
 }
 
 function renderQueue(queue) {
-	var tempContainer = document.createDocumentFragment();
-	var trackIndex = queue.startIndex + 1;
-	var scrollTimeout;
-
-	queue.items.forEach(function (q) {
-		var li = document.createElement('li');
-		li.dataset.title = q.uri;
-		li.dataset.trackNo = trackIndex++;
-		li.tabIndex = trackIndex;
-
-		var albumArt = document.createElement('img');
-		var prefix = (window.location.pathname != '/') ? window.location.pathname : ''
-		albumArt.dataset.src = prefix + q.albumArtURI;
-		if (trackIndex < 20) {
-			albumArt.src = prefix + q.albumArtURI;
-			albumArt.className = "loaded";
-		}
-
-		li.appendChild(albumArt);
-
-		var trackInfo = document.createElement('div');
-		var title = document.createElement('p');
-		title.className = 'title';
-		title.textContent = q.title;
-		trackInfo.appendChild(title);
-		var artist = document.createElement('p');
-		artist.className = 'artist';
-		artist.textContent = q.artist;
-		trackInfo.appendChild(artist);
-
-		li.appendChild(trackInfo);
-		tempContainer.appendChild(li);
-	});
-
-	var oldContainer = document.getElementById('queue-container');
-	if (queue.startIndex == 0) {
-		// This is a new queue
-		var newContainer = oldContainer.cloneNode(false);
-		newContainer.addEventListener('scroll', function (e) {
-			clearTimeout(scrollTimeout);
-			var _this = this;
-			scrollTimeout = setTimeout(function () {
-				lazyLoadImages(_this);
-			},150);
-
-		});
-		newContainer.appendChild(tempContainer);
-		oldContainer.parentNode.replaceChild(newContainer, oldContainer);
-	} else {
-		// This should be added! we assume they come in the correct order
-		oldContainer.appendChild(tempContainer);
-
-	}
+//	var tempContainer = document.createDocumentFragment();
+//	var trackIndex = queue.startIndex + 1;
+//	var scrollTimeout;
+//
+//	queue.items.forEach(function (q) {
+//		var li = document.createElement('li');
+//		li.dataset.title = q.uri;
+//		li.dataset.trackNo = trackIndex++;
+//		li.tabIndex = trackIndex;
+//
+//		var albumArt = document.createElement('img');
+//		var prefix = (window.location.pathname != '/') ? window.location.pathname : ''
+//		albumArt.dataset.src = prefix + q.albumArtURI;
+//		if (trackIndex < 20) {
+//			albumArt.src = prefix + q.albumArtURI;
+//			albumArt.className = "loaded";
+//		}
+//
+//		li.appendChild(albumArt);
+//
+//		var trackInfo = document.createElement('div');
+//		var title = document.createElement('p');
+//		title.className = 'title';
+//		title.textContent = q.title;
+//		trackInfo.appendChild(title);
+//		var artist = document.createElement('p');
+//		artist.className = 'artist';
+//		artist.textContent = q.artist;
+//		trackInfo.appendChild(artist);
+//
+//		li.appendChild(trackInfo);
+//		tempContainer.appendChild(li);
+//	});
+//
+//	var oldContainer = document.getElementById('queue-container');
+//	if (queue.startIndex == 0) {
+//		// This is a new queue
+//		var newContainer = oldContainer.cloneNode(false);
+//		newContainer.addEventListener('scroll', function (e) {
+//			clearTimeout(scrollTimeout);
+//			var _this = this;
+//			scrollTimeout = setTimeout(function () {
+//				lazyLoadImages(_this);
+//			},150);
+//
+//		});
+//		newContainer.appendChild(tempContainer);
+//		oldContainer.parentNode.replaceChild(newContainer, oldContainer);
+//	} else {
+//		// This should be added! we assume they come in the correct order
+//		oldContainer.appendChild(tempContainer);
+//
+//	}
 }
 
 function lazyLoadImages(container) {

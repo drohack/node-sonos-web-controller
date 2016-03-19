@@ -118,6 +118,7 @@
 
 			}
 
+			document.getElementById("current-track-info").querySelector(".playlistName").textContent = currentZone.state.playlistName;
 			document.getElementById("current-track-info").querySelector(".track").textContent = currentZone.state.currentTrack.title;
 			document.getElementById("current-track-info").querySelector(".artist").textContent = currentZone.state.currentTrack.artist;
 			document.getElementById("current-track-info").querySelector(".track-art").src = currentZone.state.currentTrack.albumArtURI;
