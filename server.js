@@ -155,13 +155,14 @@ socketServer.sockets.on('connection', function (socket) {
       player.setAVTransportURI('x-rincon:' + data.group);
   });
 
-  socket.on('play-favorite', function (data) {
+  socket.on('play-favorite', function (data, callback) {
     console.log(data)
     var player = discovery.getPlayerByUUID(data.uuid);
     if (!player) return;
 
     player.replaceWithFavorite(data.favorite, function (success) {
-      if (success) player.play();
+    	player.play();
+    	callback();
     });
   });
 

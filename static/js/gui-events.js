@@ -88,7 +88,7 @@ document.getElementById('prev').addEventListener('click', function () {
 	Socket.socket.emit('transport-state', { uuid: Sonos.currentState.selectedZone, state: action });
 });
 
-document.getElementById('music-sources-container').addEventListener('dblclick', function (e) {
+document.getElementById('music-sources-container').addEventListener('click', function (e) {
 	function findFavoriteNode(currentNode) {
 		// If we are at top level, abort.
 		if (currentNode == this) return;
@@ -96,7 +96,23 @@ document.getElementById('music-sources-container').addEventListener('dblclick', 
 		return findFavoriteNode(currentNode.parentNode);
 	}
 	var li = findFavoriteNode(e.target);
-	Socket.socket.emit('play-favorite', {uuid: Sonos.currentState.selectedZone, favorite: li.dataset.title});
+	
+	//Check to make sure you clicked on a Favorite
+	if(li != null) {
+		//Display loadingOverlay & "Loading..." animation
+		document.getElementById('loadingOverlay').style.display = 'block';
+		var el = document.getElementById('loading'),
+		    i = 0,
+		    load = setInterval(function() {
+		      i = ++i % 4;
+		      el.innerHTML = 'Loading' + Array(i + 1).join('.');
+		}, 700);
+		//Emit play-favorite to node-sonos-discovery
+		Socket.socket.emit('play-favorite', {uuid: Sonos.currentState.selectedZone, favorite: li.dataset.title}, function() {
+			//After done setting up next favorite, wait 1 more second before removing the loadingOverlay
+			setTimeout(document.getElementById('loadingOverlay').style.display = 'none', 1500);
+		});
+	}
 });
 
 document.getElementById('status-container').addEventListener('dblclick', function (e) {
