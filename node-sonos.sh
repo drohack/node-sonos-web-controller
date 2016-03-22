@@ -6,4 +6,4 @@ epiphany-broswer https://localhost:8080 &
 sleep 10s
 xdotool key F11
 sleep 2s
-xdotool key F5 #refresh to make sure the page doesn't get sized incorrectly when full screened
+xdotool key F5 #refresh to make sure the page doesn't get sized incorrectly when full screened 
