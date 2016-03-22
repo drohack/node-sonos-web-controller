@@ -1,4 +1,55 @@
-Sonos Web Controller
+Raspberry Pi 7" Touchscreen AutoStart Sonos Web Controller
+====================
+
+This project was forked from https://github.com/jishi/node-sonos-web-controller
+This was forked to create a customized layout and some added features to work better when running off of a Raspberry Pi running Raspbian Jessie, being displayed on the Official Raspberry Pi 7" Touchscreen, and auto start the node-sonos-web-controller when the Pi boots up.
+
+The main updates:
+
+ * Removed Queue (no screen space & ate up a lot of resources loading the album art for each song)
+ * Resized Now Playing
+ * Increased size of scroll bars (better for touch)
+ * Changed selecting a Favorite to play to a single click (instead of double click)
+ * Added "Playlist Name" to Now Playing section
+ * Added "Loading..." overlay when a user selects a new playlist or presses Play/Pause/Next (The command gets sent right away, but it takes the pi a moment to update so this is used as a confirmation of the action & lock out the user so they don't send multiple commands.)
+
+Installation (Raspbian Jessie)
+============
+
+Make sure your raspberry pi is up to date
+
+	sudo apt-get update
+	sudo apt-get upgrade
+
+Install git, npm, node.js, pm2, and xdotool
+
+	sudo apt-get install git nodejs npm xdotool
+	sudo npm install pm2 -g
+	
+Download the node-sonos-web-controller (I've set to download it to /home/pi/ folder).
+	
+	git clone https://github.com/drohack/node-sonos-web-controller.git /home/pi/node-sonos-web-controller
+	
+Load node-sonos-web-controller into PM2 to run it as a service and load when the Pi powers on.
+[pm2 startup] will give you a script to run to load pm2 at startup. Just copy and paste it into the terminal & run.
+
+	cd /home/pi/node-sonos-web-controller
+	sudo npm install -g n
+	sudo n stable
+	pm2 start server.js -x
+	pm2 save
+	pm2 startup
+	
+Make auto start script executable
+
+	chmod +x /home/pi/node-sonos-web-controller/node-sonos.sh
+	
+To start a webbrowser in fullscreen pointing to the node-sonos-web-controller on login add the following line to the end of ~/.config/lxsession/LXDE-pi/autostart file
+
+	@/home/pi/node-sonos-web-controller/node-sonos.sh
+
+
+Sonos Web Controller (original README)
 ====================
 
 NOTE! THIS IS A WORK IN PROGRESS! This is a really early alpha. Things might break from time to time, until I settle a final release that I consider stable for daily use. Until then only master branch will exist.
